@@ -540,52 +540,52 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="glass w-full max-w-md rounded-[2.5rem] p-10 relative shadow-2xl border border-white/10"
+              className="glass w-full max-w-sm rounded-[2rem] p-8 relative shadow-2xl border border-white/10"
             >
               <button 
                 onClick={() => setIsSignInModalOpen(false)} 
-                className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
+                className="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors"
               >
-                <X size={24} strokeWidth={3} />
+                <X size={20} strokeWidth={3} />
               </button>
 
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-purple-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-500/30">
-                  <Sparkles className="text-purple-400" size={32} />
+              <div className="text-center mb-6">
+                <div className="w-14 h-14 bg-purple-600/20 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-purple-500/30">
+                  <Sparkles className="text-purple-400" size={28} />
                 </div>
-                <h2 className="text-3xl font-black mb-2">Đăng ký</h2>
-                <p className="text-gray-400 text-sm font-bold">Bắt đầu hành trình tối ưu SEO cùng AI</p>
+                <h2 className="text-2xl font-black mb-1">Đăng ký</h2>
+                <p className="text-gray-400 text-[12px] font-bold">Bắt đầu hành trình tối ưu SEO cùng AI</p>
               </div>
 
-              <form onSubmit={handleSignIn} className="space-y-6">
+              <form onSubmit={handleSignIn} className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-black text-purple-400 mb-2 ml-1 uppercase tracking-widest">Họ và tên</label>
+                  <label className="block text-[9px] font-black text-purple-400 mb-1.5 ml-1 uppercase tracking-widest">Họ và tên</label>
                   <input 
                     type="text" 
                     required
                     value={signInData.name}
                     onChange={(e) => setSignInData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Nhập tên của bạn..." 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-500 transition text-white font-bold placeholder:text-gray-600"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold text-sm placeholder:text-gray-600"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-purple-400 mb-3 ml-1 uppercase tracking-widest">Nền tảng bán hàng</label>
-                  <div className="grid grid-cols-1 gap-3">
+                  <label className="block text-[9px] font-black text-purple-400 mb-2 ml-1 uppercase tracking-widest">Nền tảng bán hàng</label>
+                  <div className="grid grid-cols-1 gap-2">
                     {['Shopee', 'Tiktok', 'Facebook'].map(platform => (
                       <button
                         key={platform}
                         type="button"
                         onClick={() => togglePlatform(platform)}
-                        className={`flex items-center justify-between px-5 py-4 rounded-2xl border transition-all font-bold text-sm ${
+                        className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all font-bold text-xs ${
                           signInData.platforms.includes(platform)
-                            ? 'bg-purple-600/20 border-purple-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+                            ? 'bg-purple-600/20 border-purple-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.2)]'
                             : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20'
                         }`}
                       >
                         {platform}
-                        {signInData.platforms.includes(platform) && <CheckCircle2 size={18} className="text-purple-400" />}
+                        {signInData.platforms.includes(platform) && <CheckCircle2 size={16} className="text-purple-400" />}
                       </button>
                     ))}
                   </div>
@@ -593,7 +593,7 @@ export default function App() {
 
                 <button 
                   type="submit"
-                  className="w-full py-5 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl font-black text-white shadow-xl hover:shadow-purple-500/40 transition-all active:scale-95 uppercase tracking-widest text-xs mt-4"
+                  className="w-full py-4 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl font-black text-white shadow-xl hover:shadow-purple-500/40 transition-all active:scale-95 uppercase tracking-widest text-[10px] mt-2"
                 >
                   Xác nhận đăng ký
                 </button>
@@ -611,13 +611,13 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="glass w-full max-w-4xl max-h-[90vh] rounded-[2rem] p-6 relative shadow-2xl overflow-hidden border border-white/10 flex flex-col"
+              className="glass w-full max-w-3xl max-h-[85vh] rounded-[1.5rem] p-5 relative shadow-2xl overflow-hidden border border-white/10 flex flex-col"
             >
               <button 
                 onClick={() => setIsArticleModalOpen(false)} 
-                className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-20"
+                className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors z-20"
               >
-                <X size={28} strokeWidth={3} />
+                <X size={24} strokeWidth={3} />
               </button>
               
               <div className="flex flex-col md:flex-row gap-6 overflow-y-auto custom-scroll pr-2">
@@ -783,13 +783,13 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="glass w-full max-w-2xl rounded-[2rem] p-8 relative shadow-2xl border border-white/10"
+              className="glass w-full max-w-xl rounded-[1.5rem] p-6 relative shadow-2xl border border-white/10"
             >
               <button 
                 onClick={() => setIsHistoryModalOpen(false)} 
-                className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
+                className="absolute top-5 right-5 text-gray-400 hover:text-white transition-colors"
               >
-                <X size={32} strokeWidth={3} />
+                <X size={24} strokeWidth={3} />
               </button>
               
               <h2 className="text-2xl font-black mb-6 flex items-center gap-2">
