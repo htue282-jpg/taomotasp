@@ -230,10 +230,92 @@ export default function App() {
       <div className="glow top-[-10%] left-[-10%]"></div>
       <div className="glow bottom-[-10%] right-[-10%] bg-purple-600/20"></div>
 
+      {/* Floating Animated Shapes */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <motion.div 
+          animate={{ 
+            y: [0, -40, 0],
+            x: [0, 20, 0],
+            rotate: [0, 90, 0]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[15%] left-[5%] w-32 h-32 border border-purple-500/10 rounded-3xl"
+        />
+        <motion.div 
+          animate={{ 
+            y: [0, 50, 0],
+            x: [0, -30, 0],
+            rotate: [0, -45, 0]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[60%] left-[15%] w-48 h-48 border border-indigo-500/10 rounded-full"
+        />
+        <motion.div 
+          animate={{ 
+            y: [0, -60, 0],
+            x: [0, 40, 0],
+            rotate: [0, 180, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] right-[10%] w-40 h-40 border border-purple-500/10 rounded-[2rem]"
+        />
+        <motion.div 
+          animate={{ 
+            y: [0, 30, 0],
+            x: [0, -20, 0]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[20%] right-[20%] w-24 h-24 border border-indigo-500/10 rounded-full"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.05, 0.1, 0.05]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[40%] left-[40%] w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"
+        />
+        
+        {/* Floating Stars */}
+        <motion.div 
+          animate={{ 
+            rotate: [0, 360],
+            scale: [0.8, 1.2, 0.8],
+            opacity: [0.1, 0.3, 0.1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[10%] left-[20%] text-purple-400/20"
+        >
+          <Star size={40} fill="currentColor" />
+        </motion.div>
+        <motion.div 
+          animate={{ 
+            rotate: [360, 0],
+            scale: [1, 0.7, 1],
+            opacity: [0.05, 0.2, 0.05]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-[30%] left-[40%] text-indigo-400/20"
+        >
+          <Star size={60} fill="currentColor" />
+        </motion.div>
+        <motion.div 
+          animate={{ 
+            rotate: [0, 360],
+            scale: [0.5, 1, 0.5],
+            opacity: [0.1, 0.4, 0.1]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[50%] right-[30%] text-purple-300/20"
+        >
+          <Star size={30} fill="currentColor" />
+        </motion.div>
+      </div>
+
       {/* Header / Navbar */}
       <nav className="fixed top-0 left-0 w-full z-[110] flex justify-between items-center px-6 md:px-10 py-6 backdrop-blur-md border-b border-white/5">
         <div className="flex items-center gap-8">
-          <div className="w-10 h-6 bg-red-600 rounded-sm flex items-center justify-center text-[8px] font-bold shadow-[0_0_15px_rgba(220,38,38,0.5)]">
+          <div className="w-10 h-6 bg-red-600 rounded-sm flex items-center justify-center text-[8px] font-bold border border-white/60 shadow-[0_0_10px_rgba(255,255,255,0.4)]">
             <Star size={12} fill="white" />
           </div>
           <div className="hidden md:flex gap-6 text-sm">
