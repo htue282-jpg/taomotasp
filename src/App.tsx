@@ -41,6 +41,7 @@ export default function App() {
   const [currentMode, setCurrentMode] = useState<'text' | 'image'>('text');
   const [prodName, setProdName] = useState('');
   const [prodFeatures, setProdFeatures] = useState('');
+  const [prodBenefits, setProdBenefits] = useState('');
   const [prodKeywords, setProdKeywords] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -150,12 +151,13 @@ export default function App() {
         const prompt = `Hãy viết một mô tả sản phẩm chuyên nghiệp, thu hút và tối ưu SEO (bằng tiếng Việt) cho sản phẩm sau:
         Tên sản phẩm: ${prodName}
         Tính năng chính: ${prodFeatures}
+        Lợi ích cho khách hàng: ${prodBenefits}
         Từ khóa SEO: ${prodKeywords}
         
         Yêu cầu:
         1. Tiêu đề hấp dẫn.
         2. Đoạn giới thiệu khơi gợi nhu cầu.
-        3. Danh sách các lợi ích nổi bật.
+        3. Danh sách các lợi ích nổi bật dựa trên thông tin cung cấp.
         4. Tích hợp các từ khóa SEO một cách tự nhiên.
         5. Lời kêu gọi hành động (CTA) mạnh mẽ.`;
         contents = prompt;
@@ -575,6 +577,16 @@ export default function App() {
                           value={prodFeatures}
                           onChange={(e) => setProdFeatures(e.target.value)}
                           placeholder="Ví dụ: Chip M2, Màn hình 4K, Pin 10h..." 
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold resize-none custom-scroll"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest">Lợi ích cho khách hàng</label>
+                        <textarea 
+                          rows={2} 
+                          value={prodBenefits}
+                          onChange={(e) => setProdBenefits(e.target.value)}
+                          placeholder="Ví dụ: Tiết kiệm thời gian, Nâng cao hiệu suất..." 
                           className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold resize-none custom-scroll"
                         ></textarea>
                       </div>
