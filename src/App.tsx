@@ -16,7 +16,8 @@ import {
   CheckCircle2,
   Menu,
   Mail,
-  Star
+  Star,
+  LogOut
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -97,6 +98,11 @@ export default function App() {
     }
     setUserProfile(signInData);
     setIsSignInModalOpen(false);
+  };
+
+  const handleLogout = () => {
+    setUserProfile(null);
+    localStorage.removeItem('ai_prod_user');
   };
 
   const togglePlatform = (platform: string) => {
@@ -233,6 +239,13 @@ export default function App() {
         <div className="flex gap-4 items-center">
           {userProfile ? (
             <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+              <button 
+                onClick={handleLogout}
+                className="text-gray-400 hover:text-red-400 transition-colors p-1"
+                title="Đăng xuất"
+              >
+                <LogOut size={16} />
+              </button>
               <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center font-black text-xs">
                 {userProfile.name.charAt(0).toUpperCase()}
               </div>
