@@ -17,7 +17,11 @@ import {
   Menu,
   Mail,
   Star,
-  LogOut
+  LogOut,
+  Package,
+  ListChecks,
+  Heart,
+  Search
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -520,84 +524,92 @@ export default function App() {
       {/* Article Modal */}
       <AnimatePresence>
         {isArticleModalOpen && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 pt-24 bg-black/75 backdrop-blur-xl">
+          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/75 backdrop-blur-xl">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="glass w-full max-w-4xl rounded-[2rem] p-8 relative shadow-2xl overflow-hidden border border-white/10"
+              className="glass w-full max-w-4xl max-h-[90vh] rounded-[2rem] p-6 relative shadow-2xl overflow-hidden border border-white/10 flex flex-col"
             >
               <button 
                 onClick={() => setIsArticleModalOpen(false)} 
-                className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors z-20"
+                className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-20"
               >
-                <X size={32} strokeWidth={3} />
+                <X size={28} strokeWidth={3} />
               </button>
               
-              <div className="flex flex-col md:flex-row gap-8">
+              <div className="flex flex-col md:flex-row gap-6 overflow-y-auto custom-scroll pr-2">
                 {/* Left Column: Input */}
-                <div className="flex-1">
-                  <h2 className="text-2xl font-black mb-6 flex items-center gap-2">
-                    <span className="text-purple-400"><Sparkles size={24} /></span> Tạo mô tả chuyên nghiệp
+                <div className="flex-1 space-y-4">
+                  <h2 className="text-xl font-black flex items-center gap-2">
+                    <span className="text-purple-400"><Sparkles size={20} /></span> Tạo mô tả chuyên nghiệp
                   </h2>
 
                   {/* Tab Switcher */}
-                  <div className="flex gap-2 mb-6 p-1 bg-white/5 rounded-2xl border border-white/10">
+                  <div className="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/10">
                     <button 
                       onClick={() => setCurrentMode('text')} 
-                      className={`flex-1 py-2 rounded-xl text-xs font-black transition-all border border-transparent uppercase tracking-widest flex items-center justify-center gap-2 ${currentMode === 'text' ? 'bg-purple-500/30 border-purple-500/60 text-white' : 'text-gray-400'}`}
+                      className={`flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all border border-transparent uppercase tracking-widest flex items-center justify-center gap-2 ${currentMode === 'text' ? 'bg-purple-500/30 border-purple-500/60 text-white' : 'text-gray-400'}`}
                     >
-                      <FileText size={14} /> Văn bản
+                      <FileText size={12} /> Văn bản
                     </button>
                     <button 
                       onClick={() => setCurrentMode('image')} 
-                      className={`flex-1 py-2 rounded-xl text-xs font-black transition-all border border-transparent uppercase tracking-widest flex items-center justify-center gap-2 ${currentMode === 'image' ? 'bg-purple-500/30 border-purple-500/60 text-white' : 'text-gray-400'}`}
+                      className={`flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all border border-transparent uppercase tracking-widest flex items-center justify-center gap-2 ${currentMode === 'image' ? 'bg-purple-500/30 border-purple-500/60 text-white' : 'text-gray-400'}`}
                     >
-                      <ImageIcon size={14} /> Hình ảnh
+                      <ImageIcon size={12} /> Hình ảnh
                     </button>
                   </div>
 
                   {/* Content: Text Mode */}
                   {currentMode === 'text' && (
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       <div>
-                        <label className="block text-[10px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest">Tên sản phẩm</label>
+                        <label className="block text-[9px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest flex items-center gap-1.5">
+                          <Package size={10} /> Tên sản phẩm
+                        </label>
                         <input 
                           type="text" 
                           value={prodName}
                           onChange={(e) => setProdName(e.target.value)}
                           placeholder="Ví dụ: Laptop Dell XPS 13" 
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-purple-500 transition text-white text-sm font-bold"
                         />
                       </div>
                       <div>
-                        <label className="block text-[10px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest">Tính năng chính</label>
+                        <label className="block text-[9px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest flex items-center gap-1.5">
+                          <ListChecks size={10} /> Tính năng chính
+                        </label>
                         <textarea 
                           rows={2} 
                           value={prodFeatures}
                           onChange={(e) => setProdFeatures(e.target.value)}
                           placeholder="Ví dụ: Chip M2, Màn hình 4K, Pin 10h..." 
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold resize-none custom-scroll"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-purple-500 transition text-white text-sm font-bold resize-none custom-scroll"
                         ></textarea>
                       </div>
                       <div>
-                        <label className="block text-[10px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest">Lợi ích cho khách hàng</label>
+                        <label className="block text-[9px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest flex items-center gap-1.5">
+                          <Heart size={10} /> Lợi ích cho khách hàng
+                        </label>
                         <textarea 
                           rows={2} 
                           value={prodBenefits}
                           onChange={(e) => setProdBenefits(e.target.value)}
                           placeholder="Ví dụ: Tiết kiệm thời gian, Nâng cao hiệu suất..." 
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold resize-none custom-scroll"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-purple-500 transition text-white text-sm font-bold resize-none custom-scroll"
                         ></textarea>
                       </div>
                       <div>
-                        <label className="block text-[10px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest">Từ khóa SEO</label>
+                        <label className="block text-[9px] font-black text-purple-400 mb-1 ml-1 uppercase tracking-widest flex items-center gap-1.5">
+                          <Search size={10} /> Từ khóa SEO
+                        </label>
                         <input 
                           type="text" 
                           value={prodKeywords}
                           onChange={(e) => setProdKeywords(e.target.value)}
                           placeholder="Ví dụ: laptop văn phòng, dell giá rẻ..." 
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition text-white font-bold"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 focus:outline-none focus:border-purple-500 transition text-white text-sm font-bold"
                         />
                       </div>
                     </div>
@@ -605,8 +617,8 @@ export default function App() {
 
                   {/* Content: Image Mode */}
                   {currentMode === 'image' && (
-                    <div className="space-y-4">
-                      <div className="w-full h-40 border-2 border-dashed border-white/20 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-purple-500 transition-colors bg-white/5">
+                    <div className="space-y-3">
+                      <div className="w-full h-32 border-2 border-dashed border-white/20 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-purple-500 transition-colors bg-white/5">
                         <input 
                           type="file" 
                           ref={fileInputRef}
@@ -616,8 +628,8 @@ export default function App() {
                         />
                         {!selectedImage ? (
                           <div className="text-center">
-                            <Upload className="mx-auto mb-2 text-purple-400" size={32} />
-                            <p className="text-xs font-black text-gray-400 uppercase tracking-widest">TẢI ẢNH SẢN PHẨM</p>
+                            <Upload className="mx-auto mb-1 text-purple-400" size={24} />
+                            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TẢI ẢNH SẢN PHẨM</p>
                           </div>
                         ) : (
                           <>
@@ -626,50 +638,50 @@ export default function App() {
                               onClick={(e) => { e.stopPropagation(); clearImage(); }} 
                               className="absolute top-2 right-2 z-20 bg-red-500/80 p-1 rounded-full text-white"
                             >
-                              <X size={16} />
+                              <X size={14} />
                             </button>
                           </>
                         )}
                       </div>
-                      <p className="text-[10px] text-center text-gray-400 font-bold italic uppercase tracking-wider">AI sẽ tự động phân tích và đề xuất SEO.</p>
+                      <p className="text-[9px] text-center text-gray-400 font-bold italic uppercase tracking-wider">AI sẽ tự động phân tích và đề xuất SEO.</p>
                     </div>
                   )}
                   
                   <button 
                     onClick={generateDescription}
                     disabled={isGenerating}
-                    className="w-full py-4 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl font-black text-white shadow-lg hover:shadow-purple-500/40 transition-all active:scale-95 mt-6 uppercase tracking-wider text-xs disabled:opacity-50"
+                    className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl font-black text-white shadow-lg hover:shadow-purple-500/40 transition-all active:scale-95 uppercase tracking-wider text-[10px] disabled:opacity-50"
                   >
                     {isGenerating ? "ĐANG PHÂN TÍCH SEO..." : "Tạo mô tả ngay"}
                   </button>
                 </div>
 
                 {/* Right Column: Result */}
-                <div className="flex-1 flex flex-col bg-black/10 rounded-[1.5rem] border border-white/5 min-h-[300px]">
+                <div className="flex-1 flex flex-col bg-black/10 rounded-[1.5rem] border border-white/5 min-h-[300px] md:min-h-0">
                   {!resultText ? (
                     <div className="flex-1 flex flex-col items-center justify-center p-10 text-center opacity-30">
-                      <div className="text-5xl mb-4"><FileText size={48} /></div>
-                      <p className="font-black text-[10px] uppercase tracking-widest text-gray-300">Kết quả hiển thị tại đây</p>
+                      <div className="text-4xl mb-4"><FileText size={40} /></div>
+                      <p className="font-black text-[9px] uppercase tracking-widest text-gray-300">Kết quả hiển thị tại đây</p>
                     </div>
                   ) : (
-                    <div className={`flex-1 flex flex-col p-6 rounded-[1.5rem] relative ${isGenerating ? 'animate-pulse' : ''}`}>
-                      <div className="flex justify-between items-center mb-4">
-                        <p className="text-[10px] text-purple-300 font-black uppercase tracking-widest italic">Nội dung tối ưu SEO:</p>
+                    <div className={`flex-1 flex flex-col p-5 rounded-[1.5rem] relative ${isGenerating ? 'animate-pulse' : ''}`}>
+                      <div className="flex justify-between items-center mb-3">
+                        <p className="text-[9px] text-purple-300 font-black uppercase tracking-widest italic">Nội dung tối ưu SEO:</p>
                         <button 
                           onClick={() => copyToClipboard(resultText)} 
-                          className="text-[9px] bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition border border-white/10 font-black flex items-center gap-1.5 tracking-widest"
+                          className="text-[8px] bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg transition border border-white/10 font-black flex items-center gap-1.5 tracking-widest"
                         >
-                          <Copy size={12} /> SAO CHÉP
+                          <Copy size={10} /> SAO CHÉP
                         </button>
                       </div>
-                      <div className="text-sm text-gray-200 leading-relaxed font-bold overflow-y-auto custom-scroll max-h-[300px] pr-2 whitespace-pre-wrap">
+                      <div className="text-xs text-gray-200 leading-relaxed font-bold overflow-y-auto custom-scroll max-h-[400px] pr-2 whitespace-pre-wrap">
                         {resultText}
                       </div>
-                      <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/10">
-                        <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">AI Engine Power</span>
+                      <div className="mt-auto pt-3 flex items-center justify-between border-t border-white/10">
+                        <span className="text-[8px] font-black text-gray-500 uppercase tracking-widest">AI Engine Power</span>
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                          <span className={`w-2 h-2 rounded-full bg-green-500 ${isGenerating ? 'animate-pulse' : ''}`}></span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                          <span className={`w-1.5 h-1.5 rounded-full bg-green-500 ${isGenerating ? 'animate-pulse' : ''}`}></span>
                         </div>
                       </div>
                     </div>
