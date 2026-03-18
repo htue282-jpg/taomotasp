@@ -311,6 +311,58 @@ export default function App() {
         </div>
       </main>
 
+      {/* Quick Action Boxes */}
+      <section className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 pb-32">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.button 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            onClick={() => handleRestrictedAction(() => { setCurrentMode('text'); setIsArticleModalOpen(true); })}
+            className="glass p-8 rounded-[2.5rem] border border-white/10 hover:border-purple-500/50 transition-all group text-left relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-colors"></div>
+            <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform border border-purple-500/30">
+              <FileText size={28} />
+            </div>
+            <h3 className="text-xl font-black mb-2">Văn bản</h3>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-widest opacity-60">Tạo mô tả bằng văn bản</p>
+          </motion.button>
+
+          <motion.button 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            onClick={() => handleRestrictedAction(() => { setCurrentMode('image'); setIsArticleModalOpen(true); })}
+            className="glass p-8 rounded-[2.5rem] border border-white/10 hover:border-purple-500/50 transition-all group text-left relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-colors"></div>
+            <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform border border-purple-500/30">
+              <ImageIcon size={28} />
+            </div>
+            <h3 className="text-xl font-black mb-2">Hình ảnh</h3>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-widest opacity-60">Tạo mô tả bằng hình ảnh</p>
+          </motion.button>
+
+          <motion.button 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            onClick={() => handleRestrictedAction(() => setIsHistoryModalOpen(true))}
+            className="glass p-8 rounded-[2.5rem] border border-white/10 hover:border-purple-500/50 transition-all group text-left relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 group-hover:bg-purple-500/10 transition-colors"></div>
+            <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform border border-purple-500/30">
+              <History size={28} />
+            </div>
+            <h3 className="text-xl font-black mb-2">Lịch sử</h3>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-widest opacity-60">Xem lại các mô tả đã tạo</p>
+          </motion.button>
+        </div>
+      </section>
+
       {/* Contact Modal */}
       <AnimatePresence>
         {isContactModalOpen && (
