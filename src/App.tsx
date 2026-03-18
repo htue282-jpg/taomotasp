@@ -33,6 +33,10 @@ export default function App() {
   // State
   const [isArticleModalOpen, setIsArticleModalOpen] = useState(false);
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<{ name: string; platforms: string[] } | null>(null);
+  const [signInData, setSignInData] = useState({ name: '', platforms: [] as string[] });
   const [currentMode, setCurrentMode] = useState<'text' | 'image'>('text');
   const [prodName, setProdName] = useState('');
   const [prodFeatures, setProdFeatures] = useState('');
@@ -49,11 +53,15 @@ export default function App() {
   // Initialize Gemini
   const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
-  // Load history from localStorage
+  // Load history and profile from localStorage
   useEffect(() => {
     const savedHistory = localStorage.getItem('ai_prod_history');
     if (savedHistory) {
       setHistory(JSON.parse(savedHistory));
+    }
+    const savedProfile = localStorage.getItem('ai_prod_user');
+    if (savedProfile) {
+      setUserProfile(JSON.parse(savedProfile));
     }
   }, []);
 
@@ -61,6 +69,44 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('ai_prod_history', JSON.stringify(history));
   }, [history]);
+
+  // Save profile to localStorage
+  useEffect(() => {
+    if (userProfile) {
+      localStorage.setItem('ai_prod_user', JSON.stringify(userProfile));
+    }
+  }, [userProfile]);
+
+  const handleRestrictedAction = (action: () => void) => {
+    if (!userProfile) {
+      setIsSignInModalOpen(true);
+    } else {
+      action();
+    }
+  };
+
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!signInData.name) {
+      alert("Vui lòng nhập họ và tên!");
+      return;
+    }
+    if (signInData.platforms.length === 0) {
+      alert("Vui lòng chọn ít nhất một nền tảng bán hàng!");
+      return;
+    }
+    setUserProfile(signInData);
+    setIsSignInModalOpen(false);
+  };
+
+  const togglePlatform = (platform: string) => {
+    setSignInData(prev => ({
+      ...prev,
+      platforms: prev.platforms.includes(platform)
+        ? prev.platforms.filter(p => p !== platform)
+        : [...prev.platforms, platform]
+    }));
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -180,13 +226,28 @@ export default function App() {
           </div>
           <div className="hidden md:flex gap-6 text-sm">
             <a href="#" className="text-white border-b-2 border-purple-500 pb-1 font-black">Trang chủ</a>
-            <button onClick={() => setIsArticleModalOpen(true)} className="text-white hover:text-purple-400 transition-colors font-black">Bài viết</button>
-            <button onClick={() => setIsHistoryModalOpen(true)} className="text-white hover:text-purple-400 transition-colors font-black">Lịch sử</button>
+            <button onClick={() => handleRestrictedAction(() => setIsArticleModalOpen(true))} className="text-white hover:text-purple-400 transition-colors font-black">Bài viết</button>
+            <button onClick={() => handleRestrictedAction(() => setIsHistoryModalOpen(true))} className="text-white hover:text-purple-400 transition-colors font-black">Lịch sử</button>
           </div>
         </div>
-        <div className="flex gap-4">
-          <button className="px-5 py-2 text-sm font-bold hover:text-purple-400">Sign in</button>
-          <button className="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-full text-sm font-black transition shadow-lg shadow-purple-500/30">
+        <div className="flex gap-4 items-center">
+          {userProfile ? (
+            <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+              <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center font-black text-xs">
+                {userProfile.name.charAt(0).toUpperCase()}
+              </div>
+              <div className="hidden sm:block">
+                <p className="text-[10px] font-black uppercase tracking-widest text-purple-400">Chào mừng,</p>
+                <p className="text-xs font-bold">{userProfile.name}</p>
+              </div>
+            </div>
+          ) : (
+            <button onClick={() => setIsSignInModalOpen(true)} className="px-5 py-2 text-sm font-bold hover:text-purple-400">Sign up</button>
+          )}
+          <button 
+            onClick={() => setIsContactModalOpen(true)}
+            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-full text-sm font-black transition shadow-lg shadow-purple-500/30"
+          >
             Contact us
           </button>
         </div>
@@ -218,7 +279,7 @@ export default function App() {
             className="flex gap-4"
           >
             <button 
-              onClick={() => setIsArticleModalOpen(true)} 
+              onClick={() => handleRestrictedAction(() => setIsArticleModalOpen(true))} 
               className="px-12 py-5 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl font-black text-lg hover:scale-105 transition transform shadow-xl shadow-purple-500/40 uppercase tracking-wide"
             >
               Bắt đầu ngay
@@ -249,6 +310,145 @@ export default function App() {
           </motion.div>
         </div>
       </main>
+
+      {/* Contact Modal */}
+      <AnimatePresence>
+        {isContactModalOpen && (
+          <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-2xl">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="glass w-full max-w-md rounded-[2.5rem] p-10 relative shadow-2xl border border-white/10"
+            >
+              <button 
+                onClick={() => setIsContactModalOpen(false)} 
+                className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
+              >
+                <X size={24} strokeWidth={3} />
+              </button>
+
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-purple-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-500/30">
+                  <Mail className="text-purple-400" size={32} />
+                </div>
+                <h2 className="text-3xl font-black mb-2">Liên hệ</h2>
+                <p className="text-gray-400 text-sm font-bold">Thông tin liên hệ nhanh</p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 bg-white/5 p-5 rounded-2xl border border-white/10">
+                  <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
+                    <Mail size={20} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-0.5">Email</p>
+                    <p className="text-sm font-bold">htue282@mail.com</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 bg-white/5 p-5 rounded-2xl border border-white/10">
+                  <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-0.5">SĐT</p>
+                    <p className="text-sm font-bold">0364501131</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 bg-white/5 p-5 rounded-2xl border border-white/10">
+                  <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-0.5">Địa chỉ</p>
+                    <p className="text-sm font-bold">175 Tây sơn, Hà nội</p>
+                  </div>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setIsContactModalOpen(false)}
+                className="w-full py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl font-black text-white transition-all mt-8 uppercase tracking-widest text-xs"
+              >
+                Đóng
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Sign In Modal */}
+      <AnimatePresence>
+        {isSignInModalOpen && (
+          <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-2xl">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="glass w-full max-w-md rounded-[2.5rem] p-10 relative shadow-2xl border border-white/10"
+            >
+              <button 
+                onClick={() => setIsSignInModalOpen(false)} 
+                className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
+              >
+                <X size={24} strokeWidth={3} />
+              </button>
+
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 bg-purple-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-purple-500/30">
+                  <Sparkles className="text-purple-400" size={32} />
+                </div>
+                <h2 className="text-3xl font-black mb-2">Đăng ký</h2>
+                <p className="text-gray-400 text-sm font-bold">Bắt đầu hành trình tối ưu SEO cùng AI</p>
+              </div>
+
+              <form onSubmit={handleSignIn} className="space-y-6">
+                <div>
+                  <label className="block text-[10px] font-black text-purple-400 mb-2 ml-1 uppercase tracking-widest">Họ và tên</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={signInData.name}
+                    onChange={(e) => setSignInData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="Nhập tên của bạn..." 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-purple-500 transition text-white font-bold placeholder:text-gray-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black text-purple-400 mb-3 ml-1 uppercase tracking-widest">Nền tảng bán hàng</label>
+                  <div className="grid grid-cols-1 gap-3">
+                    {['Shopee', 'Tiktok', 'Facebook'].map(platform => (
+                      <button
+                        key={platform}
+                        type="button"
+                        onClick={() => togglePlatform(platform)}
+                        className={`flex items-center justify-between px-5 py-4 rounded-2xl border transition-all font-bold text-sm ${
+                          signInData.platforms.includes(platform)
+                            ? 'bg-purple-600/20 border-purple-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+                            : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20'
+                        }`}
+                      >
+                        {platform}
+                        {signInData.platforms.includes(platform) && <CheckCircle2 size={18} className="text-purple-400" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full py-5 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl font-black text-white shadow-xl hover:shadow-purple-500/40 transition-all active:scale-95 uppercase tracking-widest text-xs mt-4"
+                >
+                  Xác nhận đăng ký
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Article Modal */}
       <AnimatePresence>
